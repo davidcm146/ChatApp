@@ -17,9 +17,7 @@ import { ConvexError } from 'convex/values'
 
 const addFriendFormSchema = z.object({
     email: z.string().min(1, { message: "This field cannot be empty" }).email("Please enter valid email"),
-
 })
-
 
 const AddFriendDialog = () => {
     const { mutate: createRequest, pending } = useMutationState(api.request.create);
@@ -41,17 +39,16 @@ const AddFriendDialog = () => {
             toast.error(error instanceof ConvexError ? error.data : "Unexpected error occurred")
         })
     }
+
     return (
         <Dialog>
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <span>
+                    <DialogTrigger asChild>
                         <Button size="icon" variant="outline">
-                            <DialogTrigger>
-                                <UserPlus />
-                            </DialogTrigger>
+                            <UserPlus />
                         </Button>
-                    </span>
+                    </DialogTrigger>
                 </TooltipTrigger>
                 <TooltipContent>
                     <p>Add Friend</p>
@@ -85,7 +82,6 @@ const AddFriendDialog = () => {
                         </DialogFooter>
                     </form>
                 </Form>
-
             </DialogContent>
         </Dialog>
     )
