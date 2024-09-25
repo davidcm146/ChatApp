@@ -9,11 +9,12 @@ import { TooltipContent, TooltipTrigger, Tooltip } from "@/components/ui/tooltip
 import { Button } from "@/components/ui/button";
 import { useConversation } from "@/hooks/useConversation";
 import { ModeToggle } from "@/components/ui/theme/theme-toggle";
+import { Badge } from "@/components/ui/badge";
 
 const MobileNav = () => {
     const paths = useNavigation();
 
-    const {isActive} = useConversation();
+    const { isActive } = useConversation();
     if (isActive) return null
 
     return (
@@ -30,6 +31,9 @@ const MobileNav = () => {
                                                 <Button size="icon" variant={path.active ? "default" : "outline"}>
                                                     {path.icon}
                                                 </Button>
+                                                {path.count ? (<Badge className="absolute left-6 bottom-7 px-2 shadow-md">
+                                                    {path.count}
+                                                </Badge>) : null}
                                             </span>
                                         </TooltipTrigger>
                                         <TooltipContent>
@@ -41,7 +45,7 @@ const MobileNav = () => {
                         );
                     })}
                     <li>
-                        <ModeToggle/>
+                        <ModeToggle />
                     </li>
                     <li>
                         <UserButton />

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { TooltipContent, TooltipTrigger, Tooltip } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/theme/theme-toggle";
+import { Badge } from "@/components/ui/badge";
 
 const DesktopNav = () => {
   const paths = useNavigation();
@@ -25,7 +26,11 @@ const DesktopNav = () => {
                         <Button size="icon" variant={path.active ? "default" : "outline"}>
                           {path.icon}
                         </Button>
+                        {path.count ? (<Badge className="absolute left-6 bottom-7 px-2 shadow-md">
+                        {path.count}
+                      </Badge>) : null}
                       </span>
+                      
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>{path.name}</p>
