@@ -19,8 +19,6 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-type Props = {}
-
 const createGroupFormSchema = z.object({
     name: z.string().min(1, {
         message: "This field cannot be empty"
@@ -31,7 +29,7 @@ const createGroupFormSchema = z.object({
 
 })
 
-const CreateGroupDialog = (props: Props) => {
+const CreateGroupDialog = () => {
     const friends = useQuery(api.friends.get);
 
     const { mutate: createGroup, pending } = useMutationState(api.friends.createGroup);
@@ -102,7 +100,7 @@ const CreateGroupDialog = (props: Props) => {
                             )
                         }} />
 
-                        <FormField control={form.control} name="members" render={({ field }) => {
+                        <FormField control={form.control} name="members" render={() => {
                             return (
                                 <FormItem>
                                     <FormLabel>

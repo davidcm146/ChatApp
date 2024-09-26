@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
-import { CircleArrowLeft, Settings, User } from 'lucide-react'
+import { CircleArrowLeft, Settings } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 

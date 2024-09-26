@@ -4,7 +4,6 @@ import { useNavigation } from "@/hooks/useNavigation";
 import { Card } from "@/components/ui/card";
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import { MessageSquare, Users } from "lucide-react";
 import { TooltipContent, TooltipTrigger, Tooltip } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { useConversation } from "@/hooks/useConversation";

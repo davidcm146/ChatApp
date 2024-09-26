@@ -9,11 +9,7 @@ import { api } from '@/convex/_generated/api'
 import { Loader2 } from 'lucide-react'
 import Request from './_components/Request'
 
-type Props = {
-
-}
-
-const FriendsPage = (props : Props) => {
+const FriendsPage = () => {
   const requests = useQuery(api.requests.get)
   return (
     <>

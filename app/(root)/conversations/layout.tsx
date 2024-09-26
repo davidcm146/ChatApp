@@ -8,7 +8,7 @@ import ConversationItem from './_components/ConversationItem';
 import CreateGroupDialog from './_components/CreateGroupDialog';
 import GroupConversationItem from './_components/GroupConversationItem';
 
-type Props = React.PropsWithChildren<{}>
+type Props = React.PropsWithChildren
 
 const ConversationsLayout = ({children} : Props) => {
   const conversations = useQuery(api.conversations.get);
