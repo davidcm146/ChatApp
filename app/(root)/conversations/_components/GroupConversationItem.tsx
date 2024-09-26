@@ -10,28 +10,25 @@ import { Badge } from '@/components/ui/badge'
 
 type Props = {
     id : Id<"conversations">,
-    imageUrl : string,
-    username : string,
+    name : string,
     lastMessageContent ?: string,
     lastMessageSender ?: string,
     unseenCount : number
 }
 
-const ConversationItem = ({id, imageUrl, unseenCount, username, lastMessageContent, lastMessageSender}: Props) => {
+const GroupConversationItem = ({id, name, unseenCount, lastMessageContent, lastMessageSender}: Props) => {
     const currentUser = useQuery(api.user.getCurrentUser);
-
   return (
     <Link href={`/conversations/${id}`} className="w-full">
-        <Card className="p-2 flex flex-row items-center gap-4 truncate">
+        <Card className="p-2 flex flex-row items-center justify-between">
             <div className="flex flex-row items-center gap-4 truncate">
                 <Avatar>
-                    <AvatarImage src={imageUrl}/>
                     <AvatarFallback>
-                        <User/>
+                        {name.charAt(0).toLocaleUpperCase()}
                     </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col truncate">
-                    <h4 className="truncate gap-4">{username}</h4>
+                    <h4 className="truncate gap-4">{name}</h4>
                     {lastMessageContent && lastMessageSender ? 
                     <span className="text-sm text-muted-foreground flex truncate overflow-ellipsis">
                         <p className="font-semibold">
@@ -57,4 +54,4 @@ const ConversationItem = ({id, imageUrl, unseenCount, username, lastMessageConte
   )
 }
 
-export default ConversationItem
+export default GroupConversationItem
