@@ -48,7 +48,7 @@ const ConversationItem = ({id, imageUrl, unseenCount, username, lastMessageConte
                 </div>
             </div>
             {
-                unseenCount ? <Badge>
+                unseenCount > 0 ? <Badge>
                     {unseenCount}
                 </Badge> : null
             }
