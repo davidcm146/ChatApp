@@ -46,12 +46,12 @@ export const get = query({
             const unseenMessages = await ctx.db.query("messages").withIndex("by_conversationId", (q)=>q.eq("conversationId", conversation._id)).filter(q => q.gt(q.field("_creationTime"), lastSeenMessageTime)).filter(q => q.neq(q.field("senderId"), currentUser._id)).collect();
 
             if (conversation.isGroup){
-                return {conversation, lastMessage, unseenCount : unseenMessages.length}
+                return {conversation, lastMessage, unseenCount : unseenMessages?.length}
             }
             else {
                 const otherMembership = conversationMemberships.filter((membership) => membership.memberId !== currentUser._id)[0];
                 const otherMember = await ctx.db.get(otherMembership.memberId);
-                return {conversation, otherMember, lastMessage, unseenCount : unseenMessages.length};
+                return {conversation, otherMember, lastMessage, unseenCount : unseenMessages?.length};
                 
             }
         }))
