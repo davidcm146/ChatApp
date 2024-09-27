@@ -39,7 +39,7 @@ export const get = query({
 
             const lastMessage = await getLastMessageDetails({ctx, id : conversation.lastMessageId})
 
-            const lastSeenMessage = conversationMemberships[index].lastSeenMessage ? await ctx.db.get(conversationMemberships[index].lastSeenMessage!) : null
+            const lastSeenMessage = conversationMemberships[index]?.lastSeenMessage ? await ctx.db.get(conversationMemberships[index]?.lastSeenMessage!) : null
 
             const lastSeenMessageTime = lastSeenMessage ? lastSeenMessage._creationTime : -1;
 
