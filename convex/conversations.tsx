@@ -34,27 +34,59 @@ export const get = query({
             return conversation;
         }))
 
-        const conversationsWithDetails = await Promise.all((await conversations).map(async(conversation, index) => {
-            const conversationMemberships = await ctx.db.query("conversationMembers").withIndex("by_conversationId", (q)=>q.eq("conversationId", conversation._id)).collect();
-
-            const lastMessage = await getLastMessageDetails({ctx, id : conversation.lastMessageId})
-
-            const lastSeenMessage = conversationMemberships[index]?.lastSeenMessage ? await ctx.db.get(conversationMemberships[index]?.lastSeenMessage!) : null
-
-            const lastSeenMessageTime = lastSeenMessage ? lastSeenMessage._creationTime : -1;
-
-            const unseenMessages = await ctx.db.query("messages").withIndex("by_conversationId", (q)=>q.eq("conversationId", conversation._id)).filter(q => q.gt(q.field("_creationTime"), lastSeenMessageTime)).filter(q => q.neq(q.field("senderId"), currentUser._id)).collect();
-
-            if (conversation.isGroup){
-                return {conversation, lastMessage, unseenCount : unseenMessages?.length}
-            }
-            else {
-                const otherMembership = conversationMemberships.filter((membership) => membership.memberId !== currentUser._id)[0];
+        const conversationsWithDetails = await Promise.all(
+            (await conversations).map(async (conversation) => {
+              const conversationMemberships = await ctx.db
+                .query("conversationMembers")
+                .withIndex("by_conversationId", (q) => q.eq("conversationId", conversation._id))
+                .collect();
+          
+              // Find the membership for the current user
+              const currentMembership = conversationMemberships.find(
+                (membership) => membership.memberId === currentUser._id
+              );
+          
+              const lastMessage = await getLastMessageDetails({ ctx, id: conversation.lastMessageId });
+          
+              const lastSeenMessage = currentMembership?.lastSeenMessage
+                ? await ctx.db.get(currentMembership.lastSeenMessage)
+                : null;
+          
+              const lastSeenMessageTime = lastSeenMessage ? lastSeenMessage._creationTime : 0;
+          
+              // Update unseenMessages logic
+              let unseenMessages = await ctx.db
+                .query("messages")
+                .withIndex("by_conversationId", (q) => q.eq("conversationId", conversation._id))
+                .filter((q) => q.gt(q.field("_creationTime"), lastSeenMessageTime))
+                .collect();
+          
+              // Exclude messages sent by the current user unless the user is the only participant
+              unseenMessages = unseenMessages.filter(
+                (message) => message.senderId !== currentUser._id || conversation.isGroup
+              );
+          
+              if (conversation.isGroup) {
+                return {
+                  conversation,
+                  lastMessage,
+                  unseenCount: unseenMessages.length,
+                };
+              } else {
+                const otherMembership = conversationMemberships.find(
+                  (membership) => membership.memberId !== currentUser._id
+                )!;
                 const otherMember = await ctx.db.get(otherMembership.memberId);
-                return {conversation, otherMember, lastMessage, unseenCount : unseenMessages?.length};
-                
-            }
-        }))
+                return {
+                  conversation,
+                  otherMember,
+                  lastMessage,
+                  unseenCount: unseenMessages.length,
+                };
+              }
+            })
+          );
+          
 
         return conversationsWithDetails
     }
